@@ -1,0 +1,3 @@
+/home/evgeny/develop/unsorted/pproxy/build/CMakeFiles/pproxy.dir
+/home/evgeny/develop/unsorted/pproxy/build/CMakeFiles/edit_cache.dir
+/home/evgeny/develop/unsorted/pproxy/build/CMakeFiles/rebuild_cache.dir
