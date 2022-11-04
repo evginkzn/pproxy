@@ -1,9 +1,19 @@
 #include "Socket.hpp"
 
+#include <cstdlib>
+#include <cstring>
+#include <unistd.h>
+
 Socket::Socket()
     : s_(-1)
 {
 	s_ = socket(PF_INET, SOCK_STREAM, 0);
+}
+
+Socket::Socket(int descr, Address address)
+    : s_(descr)
+{
+    memcpy(&addr_, &address, sizeof(address));
 }
 
 bool Socket::connect()
@@ -11,27 +21,35 @@ bool Socket::connect()
     return false;
 }
 
-bool Socket::bind()
+int Socket::bind(Address address)
 {
-    return false;
+    memcpy(&addr_, &address, sizeof(address));
+    return ::bind(s_, (struct sockaddr*)&(addr_.is), addr_.length);
 }
 
-bool Socket::listen()
+int Socket::listen(int queue_size)
 {
-    return false;
+    return ::listen(s_, queue_size);
 }
 
-int Socket::accept()
+int Socket::accept(Address& address)
 {
-    return ::accept(s_, (struct sockaddr*)&addr_, &addr_len_);
+    int result = -1;
+    result = ::accept(s_, (struct sockaddr*)&(address.is), (socklen_t*)&(address.length));
+    return result;
 }
 
-bool Socket::read()
+int Socket::receive(uint8_t* data, size_t length)
 {
-    return ::read();
+    return ::read(s_, data, length);
 }
 
-bool Socket::write()
+int Socket::send(const uint8_t* data, size_t length)
 {
-    return false;
+    return ::write(s_, data, length);
+}
+
+int Socket::close()
+{
+    return ::close(s_);
 }

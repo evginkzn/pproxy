@@ -8,26 +8,36 @@
 class Socket
 {
 public:
+    struct Address
+    {
+        sockaddr_in is;
+        int length;
+    };
 
 public:
     Socket();
+    Socket(int descr, Address address);
     Socket(const Socket&) = delete;
     Socket& operator=(const Socket&) = delete;
-    ~Socket(){}
+    ~Socket(){ close(); }
 
     bool set_address();
+    Address get_address() const
+    {
+        return addr_;
+    }
 
     bool connect();
-    bool bind();
-    bool listen();
-    int accept();
-    bool read();
-    bool write();
+    int bind(Address address);
+    int listen(int queue_size);
+    int accept(Address& address);
+    int receive(uint8_t* data, size_t length);
+    int send(const uint8_t* data, size_t length);
+    int close();
 
 private:
     int s_;
-    sockaddr_in addr_;
-    socklen_t addr_len_;
+    Address addr_;
 };
 
 #endif // ! SOCKET_HPP
