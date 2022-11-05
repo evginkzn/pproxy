@@ -16,9 +16,9 @@ Socket::Socket(int descr, Address address)
     memcpy(&addr_, &address, sizeof(address));
 }
 
-bool Socket::connect()
+int Socket::connect(Address address)
 {
-    return false;
+    return ::connect(s_, (struct sockaddr*)&(address.is), address.length);
 }
 
 int Socket::bind(Address address)
@@ -41,11 +41,21 @@ int Socket::accept(Address& address)
 
 int Socket::receive(uint8_t* data, size_t length)
 {
+    if (data == nullptr)
+    {
+        return -1;
+    }
+
     return ::read(s_, data, length);
 }
 
 int Socket::send(const uint8_t* data, size_t length)
 {
+    if (data == nullptr)
+    {
+        return -1;
+    }
+    
     return ::write(s_, data, length);
 }
 

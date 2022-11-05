@@ -21,13 +21,15 @@ public:
     Socket& operator=(const Socket&) = delete;
     ~Socket(){ close(); }
 
+    int get_descriptor() const { return s_; }
+
     bool set_address();
     Address get_address() const
     {
         return addr_;
     }
 
-    bool connect();
+    int connect(Address address);
     int bind(Address address);
     int listen(int queue_size);
     int accept(Address& address);
