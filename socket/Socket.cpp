@@ -34,9 +34,7 @@ int Socket::listen(int queue_size)
 
 int Socket::accept(Address& address)
 {
-    int result = -1;
-    result = ::accept(s_, (struct sockaddr*)&(address.is), (socklen_t*)&(address.length));
-    return result;
+    return ::accept(s_, (struct sockaddr*)&(address.is), (socklen_t*)&(address.length));
 }
 
 int Socket::receive(uint8_t* data, size_t length)
