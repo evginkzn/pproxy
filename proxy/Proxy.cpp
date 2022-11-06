@@ -56,18 +56,6 @@ bool Proxy::init()
 
     std::cout << "Server socket created & bind" << std::endl;
 
-    while(1)
-    {
-        Socket::Address down_client_addr;
-        int client_sock_descr = server_s_.accept(down_client_addr);
-        if (client_sock_descr < 0)
-        {
-            std::cout << "Error on accepting connection: " 
-                      << strerror(errno) 
-                      << std::endl;
-        }
-    }
-
     if (client_s_.get_descriptor() < 0)
     {
         std::cout << "Failed to create socket: "
@@ -101,12 +89,13 @@ bool Proxy::attach_logger()
     return false;
 }
 
+static Socket::Address down_client_addr;
+
 int Proxy::run()
 {
     while(1)
     {
-        Socket::Address down_client_addr;
-        int client_sock_descr = server_s_.accept(down_client_addr);
+        int client_sock_descr = server_s_.accept(&down_client_addr);
         if (client_sock_descr < 0)
         {
             std::cout << "Error on accepting connection: " 
@@ -125,8 +114,8 @@ int Proxy::run()
                 std::cout << buffer_ << std::endl;
                 server_s_.send(buffer_, BufferSize);
             }
-            down_client_sock.close();
-            std::cout << "Connection closed" << std::endl;
+            /*down_client_sock.close();
+            std::cout << "Connection closed" << std::endl;*/
         }
     }
 }

@@ -32,7 +32,7 @@ public:
     int connect(Address address);
     int bind(Address address);
     int listen(int queue_size);
-    int accept(Address& address);
+    int accept(Address* address);
     int receive(uint8_t* data, size_t length);
     int send(const uint8_t* data, size_t length);
     int close();
